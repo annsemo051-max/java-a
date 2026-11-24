@@ -1,0 +1,115 @@
+public class SinglyLinkedList {
+
+    // Inner class representing a single Node
+    static class Node {
+        int data;
+        Node next;
+
+        Node(int data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
+
+    private Node head;
+
+    // 1. Insert at the beginning of the list
+    public void insertAtBeginning(int data) {
+        Node newNode = new Node(data);
+        newNode.next = head;
+        head = newNode;
+        System.out.println("Inserted at beginning: " + data);
+    }
+
+    // 2. Insert at the end of the list
+    public void insertAtEnd(int data) {
+        Node newNode = new Node(data);
+        if (head == null) {
+            head = newNode;
+            System.out.println("Inserted at end (as head): " + data);
+            return;
+        }
+        Node current = head;
+        while (current.next != null) {
+            current = current.next;
+        }
+        current.next = newNode;
+        System.out.println("Inserted at end: " + data);
+    }
+
+    // 3. Delete a node by value
+    public void deleteByValue(int key) {
+        if (head == null) {
+            System.out.println("List is empty. Nothing to delete.");
+            return;
+        }
+
+        // If head itself holds the key
+        if (head.data == key) {
+            head = head.next;
+            System.out.println("Deleted head node: " + key);
+            return;
+        }
+
+        Node current = head;
+        Node previous = null;
+
+        while (current != null && current.data != key) {
+            previous = current;
+            current = current.next;
+        }
+
+        if (current == null) {
+            System.out.println("Value " + key + " not found in the list.");
+            return;
+        }
+
+        previous.next = current.next;
+        System.out.println("Deleted node: " + key);
+    }
+
+    // 4. Search for an element
+    public boolean search(int key) {
+        Node current = head;
+        while (current != null) {
+            if (current.data == key) {
+                return true;
+            }
+            current = current.next;
+        }
+        return false;
+    }
+
+    // 5. Traverse and display the list
+    public void display() {
+        if (head == null) {
+            System.out.println("Linked List is empty.");
+            return;
+        }
+        Node current = head;
+        System.out.print("Linked List: ");
+        while (current != null) {
+            System.out.print(current.data + " -> ");
+            current = current.next;
+        }
+        System.out.println("null");
+    }
+
+    public static void main(String[] args) {
+        SinglyLinkedList list = new SinglyLinkedList();
+
+        list.insertAtEnd(10);
+        list.insertAtEnd(20);
+        list.insertAtBeginning(5);
+        list.insertAtEnd(30);
+        list.display();
+
+        System.out.println("Is 20 in the list? " + list.search(20));
+
+        list.deleteByValue(20);
+        list.display();
+
+        list.deleteByValue(5);
+        list.display();
+    }
+}
