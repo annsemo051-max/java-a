@@ -1,0 +1,124 @@
+public class BinarySearchTree {
+
+    // Inner class representing a single Tree Node
+    static class Node {
+        int key;
+        Node left, right;
+
+        public Node(int item) {
+            key = item;
+            left = right = null;
+        }
+    }
+
+    private Node root;
+
+    public BinarySearchTree() {
+        root = null;
+    }
+
+    // 1. Insert a new key into the BST
+    public void insert(int key) {
+        root = insertRec(root, key);
+    }
+
+    private Node insertRec(Node root, int key) {
+        // If the tree/subtree is empty, return a new node
+        if (root == null) {
+            root = new Node(key);
+            return root;
+        }
+
+        // Otherwise, recur down the tree (smaller left, larger right)
+        if (key < root.key) {
+            root.left = insertRec(root.left, key);
+        } else if (key > root.key) {
+            root.right = insertRec(root.right, key);
+        }
+
+        return root;
+    }
+
+    // 2. Search for a key in the BST
+    public boolean search(int key) {
+        return searchRec(root, key);
+    }
+
+    private boolean searchRec(Node root, int key) {
+        if (root == null) {
+            return false;
+        }
+        if (root.key == key) {
+            return true;
+        }
+        return key < root.key ? searchRec(root.left, key) : searchRec(root.right, key);
+    }
+
+    // 3a. In-order Traversal (Left -> Root -> Right) - yields sorted order in a BST
+    public void inorder() {
+        System.out.print("In-order traversal:   ");
+        inorderRec(root);
+        System.out.println();
+    }
+
+    private void inorderRec(Node root) {
+        if (root != null) {
+            inorderRec(root.left);
+            System.out.print(root.key + " ");
+            inorderRec(root.right);
+        }
+    }
+
+    // 3b. Pre-order Traversal (Root -> Left -> Right)
+    public void preorder() {
+        System.out.print("Pre-order traversal:  ");
+        preorderRec(root);
+        System.out.println();
+    }
+
+    private void preorderRec(Node root) {
+        if (root != null) {
+            System.out.print(root.key + " ");
+            preorderRec(root.left);
+            preorderRec(root.right);
+        }
+    }
+
+    // 3c. Post-order Traversal (Left -> Right -> Root)
+    public void postorder() {
+        System.out.print("Post-order traversal: ");
+        postorderRec(root);
+        System.out.println();
+    }
+
+    private void postorderRec(Node root) {
+        if (root != null) {
+            postorderRec(root.left);
+            postorderRec(root.right);
+            System.out.print(root.key + " ");
+        }
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree bst = new BinarySearchTree();
+
+        /* Construct the following BST:
+                 50
+               /    \
+              30     70
+             /  \   /  \
+           20   40 60   80
+        */
+        int[] values = {50, 30, 20, 40, 70, 60, 80};
+        for (int v : values) {
+            bst.insert(v);
+        }
+
+        bst.inorder();
+        bst.preorder();
+        bst.postorder();
+
+        int target = 60;
+        System.out.println("Search " + target + ": " + (bst.search(target) ? "Found" : "Not Found"));
+    }
+}
